@@ -1,0 +1,1 @@
+java -cp ./lib/transactions*.jar:./lib/* mx.payclip.assessment.App $1 $2 $3
