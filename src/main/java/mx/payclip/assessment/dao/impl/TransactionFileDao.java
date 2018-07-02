@@ -35,7 +35,7 @@ public class TransactionFileDao implements TransactionDao {
 
     @Override
     public Optional<TransactionDto> findByUserIdAndTransactionId(Integer userId, String transactionId) {
-        String file = currentDirectory + userId + File.separator + transactionId;
+        String file = currentDirectory.concat(String.valueOf(userId)).concat(File.separator).concat(transactionId);
         TransactionDto transactionDto;
         try {
             transactionDto = mapper.readValue(new File(file), TransactionDto.class);
@@ -51,7 +51,7 @@ public class TransactionFileDao implements TransactionDao {
 
     @Override
     public List<TransactionDto> findAllByUserId(Integer userId) {
-        File folder = new File(currentDirectory + userId);
+        File folder = new File(currentDirectory.concat(String.valueOf(userId)));
         String[] listOfFiles = folder.list();
 
         List<TransactionDto> list = new ArrayList<>();
@@ -74,7 +74,7 @@ public class TransactionFileDao implements TransactionDao {
         sumResultDto.setUserId(userId);
         if (transactionDtoList.size() > 0) {
             sumResultDto.setSum(transactionDtoList.stream().map(TransactionDto::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
-        }else{
+        } else {
             sumResultDto.setSum(BigDecimal.ZERO);
         }
         return sumResultDto;
